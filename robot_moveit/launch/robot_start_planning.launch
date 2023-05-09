@@ -1,0 +1,25 @@
+<launch>
+     <!-- launch file which loads the robot in Gazebo and spawns the controllers -->
+    <include file = "$(find robot_moveit)/launch/robot_start_gazebo.launch" />
+
+    <!-- <include file="$(find [robot_moveit])/launch/planning_context.launch">
+      <arg name="load_robot_description" value="true" />
+    </include> -->
+
+    <!-- joint_state_publisher node -->
+    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+        <param name="/use_gui" value="false"/>
+        <rosparam param="/source_list">[/joint_states]</rosparam>
+    </node>
+
+    <!-- Launch Moveit Move Group Node -->
+    <include file="$(find robot_moveit)/launch/move_group.launch">
+        <arg name="publish_monitored_planning_scene" value="true"/>
+    </include>
+
+    <!-- Run Rviz and load the default configuration to see the state of the move_group node --> 
+    <arg name="use_rviz" default="true" />
+    <include file="$(find robot_moveit)/launch/moveit_rviz.launch" if="$(arg use_rviz)">
+        <arg name="rviz_config" value="$(find robot_moveit)/launch/moveit.rviz"/>
+    </include>
+</launch>

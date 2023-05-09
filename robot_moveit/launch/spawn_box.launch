@@ -1,0 +1,12 @@
+<launch>
+    <include file="$(find robot_moveit)/launch/spawn_sdf.launch">
+        <arg name="sdf_name" value="box"/>
+        <arg name="x" value="0.0"/>
+        <arg name="y" value="0.23"/>
+        <arg name="z" value="0.025"/>
+        <arg name="R" value="0.0"/>
+        <arg name="P" value="0.0"/>
+        <arg name="Y" value="0.0"/>
+        <arg name="sdf_file" value="$(find robot_arm)/sdf/box.sdf"/>
+    </include>
+</launch>
