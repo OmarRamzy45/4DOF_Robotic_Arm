@@ -26,29 +26,53 @@
         <joint name="joint_3" value="0"/>
         <joint name="joint_4" value="0"/>
     </group_state>
+    <group_state name="pick_motor" group="arm_group">
+        <joint name="joint_1" value="1.047"/>
+        <joint name="joint_2" value="0.0"/>
+        <joint name="joint_3" value="0.0"/>
+        <joint name="joint_4" value="0.0"/>
+    </group_state>
     <group_state name="pick" group="arm_group">
-        <joint name="joint_1" value="1.309"/>
+        <joint name="joint_1" value="1.047"/>
         <joint name="joint_2" value="-0.436332"/>
         <joint name="joint_3" value="-1.0472"/>
         <joint name="joint_4" value="0.959931"/>
     </group_state>
     <group_state name="pick_up" group="arm_group">
-        <joint name="joint_1" value="1.309"/>
+        <joint name="joint_1" value="1.047"/>
         <joint name="joint_2" value="-0.436332"/>
         <joint name="joint_3" value="0.0"/>
         <joint name="joint_4" value="0.872665"/>
     </group_state>
+    <group_state name="place_red_motor" group="arm_group">
+        <joint name="joint_1" value="0.5236"/>
+        <joint name="joint_2" value="-0.436332"/>
+        <joint name="joint_3" value="0.0"/>
+        <joint name="joint_4" value="0.872665"/>
+    </group_state>    
     <group_state name="place_red" group="arm_group">
-        <joint name="joint_1" value="0.523599"/>
+        <joint name="joint_1" value="0.5236"/>
         <joint name="joint_2" value="-0.349066"/>
         <joint name="joint_3" value="-1.0472"/>
         <joint name="joint_4" value="0.785398"/>
+    </group_state>
+    <group_state name="place_blue_motor" group="arm_group">
+        <joint name="joint_1" value="0.261799"/>
+        <joint name="joint_2" value="-0.436332"/>
+        <joint name="joint_3" value="0.0"/>
+        <joint name="joint_4" value="0.872665"/>
     </group_state>
     <group_state name="place_blue" group="arm_group">
         <joint name="joint_1" value="0.261799"/>
         <joint name="joint_2" value="-0.349066"/>
         <joint name="joint_3" value="-1.0472"/>
         <joint name="joint_4" value="0.785398"/>
+    </group_state>
+    <group_state name="place_green_motor" group="arm_group">
+        <joint name="joint_1" value="0.0"/>
+        <joint name="joint_2" value="-0.436332"/>
+        <joint name="joint_3" value="0.0"/>
+        <joint name="joint_4" value="0.872665"/>
     </group_state>
     <group_state name="place_green" group="arm_group">
         <joint name="joint_1" value="0.0"/>
