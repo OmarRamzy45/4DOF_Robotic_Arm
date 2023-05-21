@@ -5,7 +5,6 @@ This repository contains the source code, documentation, and design files for a 
 ## Table of Contents
 
 - [4 DOF Robotic Arm](#4-dof-robotic-arm)
-  - [Table of Contents](#table-of-contents)
   - [Overview](#overview)
   - [Features](#features)
   - [Installation](#installation)
