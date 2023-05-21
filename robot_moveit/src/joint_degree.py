@@ -1,3 +1,4 @@
+#! /usr/bin/env python3
 import rospy
 from sensor_msgs.msg import JointState
 from std_msgs.msg import Float64MultiArray
@@ -20,16 +21,16 @@ def map_to_degrees(x):
 
 def gripper_state(x):
     """
-    Maps a value x from the range (0, 0.3) to the range (180, 120).
+    Maps a value x from the range (0, 0.3) to the range (180, 150)
     """
-    y = 180 - x * 600
-    y = max(120, min(180, y))
+    y = 175 - x * 600
+    y = max(150, min(175, y))
     return y
 
 def callback(data:JointState):
     global angles_msg
     angles_msg.data = [
-        map_to_degrees(data.position[0]),
+        data.position[0] * (180/math.pi),
         map_to_degrees(data.position[1]),
         map_to_degrees(data.position[2]),
         map_to_degrees(data.position[3]),
