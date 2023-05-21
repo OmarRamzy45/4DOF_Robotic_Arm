@@ -7,7 +7,7 @@ import geometry_msgs.msg
 import tf2_ros
 import tf.transformations
 import math
-from std_msgs.msg import Float64, Bool
+from std_msgs.msg import Float64, Bool, Char
 from geometry_msgs.msg import Pose
 
 class Robot_Control:
@@ -36,12 +36,28 @@ class Robot_Control:
         # This provides a remote interface for getting, setting, and updating the robot’s internal understanding of the surrounding world:
         self.scene = moveit_commander.PlanningSceneInterface()
 
+        # subscriber to color_sensor topic
+        self.color_sub = rospy.Subscriber("/color_sensor", Char, self.color_callback)
+
         # define the group of joints to be controlled by moveit
         self.move_group = moveit_commander.MoveGroupCommander(group_name)
         self.move_group.set_planner_id(planner_id)
         self.move_group.set_planning_time(planning_time)
         self.move_group.set_num_planning_attempts(num_planning_attempts)
         self.move_group.allow_replanning(allow_replanning)
+
+        self.color = 'n'
+        pass
+
+    def color_callback(self, msg):
+        '''
+        --------------------
+        This function is used to get the color from the color sensor
+        --------------------
+        arguments:
+            msg: Char
+        '''
+        self.color = msg.data
         pass
 
     def control_joints_angles(self, joint_goal_list,velocity=0.1,acceleration=0.1,angle_is_degree=True):
@@ -93,6 +109,7 @@ class Robot_Control:
         # It is always good to clear your targets after planning with poses.
         # Note: there is no equivalent function for clear_joint_value_targets()
         self.move_group.clear_pose_targets()
+        rospy.sleep(1)
         pass
 
     def get_pose(self):
@@ -111,7 +128,30 @@ class Robot_Control:
         '''
         # get the current pose
         pose = self.move_group.get_current_pose().pose
-        return pose
+        return 
+        
+    def go_to_pose_goal_cartesian(self, pose_goal,velocity=0.1,acceleration=0.1):
+        '''
+        --------------------
+        This function is used to move the robot to the desired pose by cartesian path
+        --------------------
+        arguments:
+            pose_goal: geometry_msgs.msg.Pose
+            velocity: velocity of the robot
+            acceleration: acceleration of the robot
+        '''
+        # set the velocity of the robot
+        self.move_group.set_max_velocity_scaling_factor(velocity)
+        # set the acceleration of the robot
+        self.move_group.set_max_acceleration_scaling_factor(acceleration)
+        # set the goal pose
+        self.move_group.set_pose_target(pose_goal)
+        # plan the motion
+        plan = self.move_group.go(wait=True)
+        self.move_group.stop()
+        # clear the targets
+        self.move_group.clear_pose_targets()
+        pass
 
     def go_to_pose_goal_cartesian_waypoints(self, waypoints,velocity=0.1,acceleration=0.1,list_type=False):
         '''
@@ -162,56 +202,41 @@ class Robot_Control:
         self.move_group.execute(new_plan,wait=True)
 
         pass
-    
-if __name__ == '__main__':
+   
+while not rospy.is_shutdown():
     try:
         robot = Robot_Control("robot_control","arm_group")
         gripper = Robot_Control("robot_control", "gripper_group")
-
-        gripper.move_to_pose("open_gripper")
-        robot.move_to_pose("pick")
-        gripper.move_to_pose("close_gripper")
-        robot.move_to_pose("pick_up")
-        robot.move_to_pose("place_blue")
-        gripper.move_to_pose("open_gripper")
+                  
         robot.move_to_pose("idle")
-        gripper.move_to_pose("close_gripper")
-
         gripper.move_to_pose("open_gripper")
+        robot.move_to_pose("pick_motor")
         robot.move_to_pose("pick")
         gripper.move_to_pose("close_gripper")
         robot.move_to_pose("pick_up")
+        robot.move_to_pose("place_red_motor")
         robot.move_to_pose("place_red")
         gripper.move_to_pose("open_gripper")
         robot.move_to_pose("idle")
-        gripper.move_to_pose("close_gripper")
 
-        gripper.move_to_pose("open_gripper")
+        robot.move_to_pose("pick_motor")
         robot.move_to_pose("pick")
         gripper.move_to_pose("close_gripper")
         robot.move_to_pose("pick_up")
+        robot.move_to_pose("place_blue_motor")
+        robot.move_to_pose("place_blue")
+        gripper.move_to_pose("open_gripper")
+        robot.move_to_pose("idle")
+
+        robot.move_to_pose("pick_motor")
+        robot.move_to_pose("pick")
+        gripper.move_to_pose("close_gripper")
+        robot.move_to_pose("pick_up")
+        robot.move_to_pose("place_green_motor")
         robot.move_to_pose("place_green")
         gripper.move_to_pose("open_gripper")
         robot.move_to_pose("idle")
         gripper.move_to_pose("close_gripper")
-
-        # gripper.get_pose()
-
-        pose = [-0.25, 0.149, 0.41, 1.5708, -0.8627, 2.6180]
-
-        # # gripper.go_to_pose_goal_cartesian_waypoints([pose],0.1,0.1)
-        # pose_goal = geometry_msgs.msg.Pose()
-        # pose_goal.orientation.w = 1.0
-        # pose_goal.position.x = 0.4
-        # pose_goal.position.y = 0.1
-        # pose_goal.position.z = 0.4
-        # group.set_pose_target(pose_goal)
-        # plan = group.go(wait=True)
-        # # Calling `stop()` ensures that there is no residual movement
-        # group.stop()
-        # # It is always good to clear your targets after planning with poses.
-        # # Note: there is no equivalent function for clear_joint_value_targets()
-        # group.clear_pose_targets()
 
     except rospy.ROSInterruptException:
         pass
