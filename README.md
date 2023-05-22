@@ -49,6 +49,7 @@ To set up the 4 DOF Robotic Arm project, follow these steps:
 
 3. build the packages in your workspace directory:
    ```shell
+   cd <catkin_ws>
    source devel/setup.bash
    catkin build
    ```
